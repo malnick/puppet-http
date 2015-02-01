@@ -1,0 +1,51 @@
+require 'rubygems'
+require 'rack'
+require 'sinatra'
+require 'webrick'
+require 'logger'
+
+# Global vars
+LOGDIR		= File.expand_path(File.dirname(__FILE__))
+SERVER_LOGFILE  = LOGDIR + '/server.log'
+SESSION_LOG	= LOGDIR + '/session.log'
+
+# Reset some envs
+ENV['HOME'] = '/root'
+ENV['PATH'] = '/sbin:/usr/sbin:/bin:/usr/bin:/opt/puppet/bin'
+ENV['RACK_ENV'] = 'production'
+
+# Implement an access log for robust logging of user info and access and git output 
+LOG = Logger.new(SESSION_LOG)
+LOG.info("Setting session log at #{SESSION_LOG}")
+LOG.info("Setting server log at #{SERVER_LOGFILE}")
+
+# Certificate Paths:
+#CERT_PATH = '/path/to/star/cert'
+
+# Server options
+opts = {
+         :Port               => 6969,
+         :Logger             => WEBrick::Log::new(SERVER_LOGFILE, WEBrick::Log::DEBUG),
+         :ServerType         => WEBrick::Daemon,
+	 :SSLEnable          => false,
+	 #:SSLEnable	     => true,
+	 #:SSLCertificate     => OpenSSL::X509::Certificate.new(File.open("#{CERT_PATH}/my-server.crt").read),
+	 #:SSLPrivateKey      => OpenSSL::PKey::RSA.new(File.open("#{CERT_PATH}/my-server.key").read),
+	 #:SSLCertName        => [ [ "CN",WEBrick::Utils::getservername ] ]
+}
+
+class Server < Sinatra::Base
+	
+    get '/kick_puppet' do
+        system('puppet agent -t')
+	end
+
+	not_found do
+		halt 404, 'You shall not pass! (page not found)'
+	end
+end
+
+Rack::Handler::WEBrick.run(Server, opts) do |server|
+	[:INT, :TERM].each { |sig| trap(sig) { server.stop } }
+end
+

@@ -8,32 +8,57 @@
 
 define webhook::listener (
 
-    $port               = $webhook::params::listen_port,
-    $bind_address       = $webhook::params::bind_address,
-    $rack_env           = $webhook::params::rack_env,
     $route              = $name, 
-    $http_method        = $webhook::params::http_method,
-    $ssl_enable         = $webhook::params::ssl_enable,
-    $cert_path          = $webhook::params::cert_path,
-    $key_path           = $webhook::params::key_path,
-    $command            = $webhook::params::command
+    $bind_address       = '0.0.0.0',
+    $rack_env           = 'production',
+    $http_method        = 'get', 
+    $ssl_enable         = false,
+    $port               = undef,
+    $cert_path          = undef, 
+    $key_path           = undef,
+    $command            = undef,
 
-) inherits webhook::params {
+) {
+
+    File {
+        mode  => '0755',
+        group => 'root',
+        user  => 'root',
+    }
 
     file {"/usr/local/bin/webhook_${name}":
         ensure => directory,
-        mode   => '0755',
-        owner  => 'root',
-        group  => 'root',
     }
 
-    file {"/usr/local/bin/webhook_${name}/webhook_${name}.rb":
+    file {"/usr/local/bin/webhook_${name}/lib/":
+        ensure => directory,
+    }
+
+    file {"webhook_${name}.rb":
+        path    => "/usr/local/bin/webhook_${name}/lib/webhook_${name}.rb",
         ensure  => file,
         content => template('webhook/webhook'),
-        mode    => '0755',
-        owner   => 'root',
-        group   => 'root',
     }
 
+    file {"/usr/local/bin/webhook_${name}/logs":
+        ensure => directory,
+    }
+
+    file {"/usr/local/bin/webhook_${name}/bin":
+        ensure => directory,
+    }
+
+    file {"/usr/local/bin/webhook_${name}/bin/run":
+        ensure  => file,
+        content => template('webhook/run.erb'),
+    }
+
+    service {"webhook_${name}":
+        ensure   => running,
+        start    => "/opt/puppet/bin/ruby /usr/local/bin/webhook_${name}/bin/run",
+        stop     => "/bin/kill -9 ${/usr/bin/lsof -i :${port} | awk '{print $2}' | tail -1)",
+        provider => 'base',
+        require  => File["/usr/local/bin/webhook_${name}/bin/run", "webhook_${name}.rb"],
+    }
 }
 

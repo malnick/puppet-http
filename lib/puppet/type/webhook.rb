@@ -11,10 +11,6 @@ Puppet::Type.newtype(:webhook) do
           provider.post
       end
 
-      newvalue(:listen) do
-          provider.listen
-      end
-
   end
 
   newproperty(:route, :namevar => true) do
@@ -23,6 +19,10 @@ Puppet::Type.newtype(:webhook) do
 
   newproperty(:port) do
       desc "The listening port"
+  end
+
+  newproperty(:fqdn) do
+      desc "The fqdn or ip address of the node"
   end
 
 end

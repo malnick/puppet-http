@@ -1,5 +1,5 @@
 #    webhook::listener { $route:
-#            listen_port  => $listen_port,
+#            port         => $listen_port,
 #            bind_address => $bind_address,
 #            rack_end     => $rack_env,
 #            http_method  => $http_method,
@@ -8,15 +8,32 @@
 
 define webhook::listener (
 
-
-    $listen_port        = $webhook::params::listen_port,
+    $port               = $webhook::params::listen_port,
     $bind_address       = $webhook::params::bind_address,
     $rack_env           = $webhook::params::rack_env,
-    $route              = $webhook::params::route,
+    $route              = $name, 
     $http_method        = $webhook::params::http_method,
-    $install            = $webhook::params::install,
+    $ssl_enable         = $webhook::params::ssl_enable,
+    $cert_path          = $webhook::params::cert_path,
+    $key_path           = $webhook::params::key_path,
+    $command            = $webhook::params::command
 
 ) inherits webhook::params {
+
+    file {"/usr/local/bin/webhook_${name}":
+        ensure => directory,
+        mode   => '0755',
+        owner  => 'root',
+        group  => 'root',
+    }
+
+    file {"/usr/local/bin/webhook_${name}/webhook_${name}.rb":
+        ensure  => file,
+        content => template('webhook/webhook'),
+        mode    => '0755',
+        owner   => 'root',
+        group   => 'root',
+    }
 
 }
 

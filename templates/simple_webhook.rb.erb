@@ -5,39 +5,41 @@ require 'webrick'
 require 'logger'
 
 # Global vars
-LOGDIR		= File.expand_path(File.dirname(__FILE__))
+LOGDIR		    = File.expand_path(File.dirname(__FILE__)) + '/logs'
 SERVER_LOGFILE  = LOGDIR + '/server.log'
-SESSION_LOG	= LOGDIR + '/session.log'
+SESSION_LOG	    = LOGDIR + '/session.log'
 
 # Reset some envs
-ENV['HOME'] = '/root'
-ENV['PATH'] = '/sbin:/usr/sbin:/bin:/usr/bin:/opt/puppet/bin'
-ENV['RACK_ENV'] = 'production'
+ENV['HOME']     = '/root'
+ENV['PATH']     = '/sbin:/usr/sbin:/bin:/usr/bin:/opt/puppet/bin'
+ENV['RACK_ENV'] = '<%= @rack_env %>'
 
 # Implement an access log for robust logging of user info and access and git output 
 LOG = Logger.new(SESSION_LOG)
 LOG.info("Setting session log at #{SESSION_LOG}")
 LOG.info("Setting server log at #{SERVER_LOGFILE}")
 
-# Certificate Paths:
-#CERT_PATH = '/path/to/star/cert'
-
 # Server options
 opts = {
-         :Port               => 6969,
-         :Logger             => WEBrick::Log::new(SERVER_LOGFILE, WEBrick::Log::DEBUG),
-         :ServerType         => WEBrick::Daemon,
-	 :SSLEnable          => false,
-	 #:SSLEnable	     => true,
-	 #:SSLCertificate     => OpenSSL::X509::Certificate.new(File.open("#{CERT_PATH}/my-server.crt").read),
-	 #:SSLPrivateKey      => OpenSSL::PKey::RSA.new(File.open("#{CERT_PATH}/my-server.key").read),
-	 #:SSLCertName        => [ [ "CN",WEBrick::Utils::getservername ] ]
+     :Port               => <%= @port %>,
+     :Logger             => WEBrick::Log::new(SERVER_LOGFILE, WEBrick::Log::DEBUG),
+     :ServerType         => WEBrick::Daemon,
+     :SSLEnable          => <%= @ssl_enable %>,
+<% if @ssl_enable %>
+     :SSLCertificate     => OpenSSL::X509::Certificate.new(File.open('<%= @cert_path %>').read),
+     :SSLPrivateKey      => OpenSSL::PKey::RSA.new(File.open('<%= @key_path %>').read),
+	 :SSLCertName        => [ [ "CN",WEBrick::Utils::getservername ] ]
+ <% end %>
 }
 
 class Server < Sinatra::Base
 	
-    get '/kick_puppet' do
-        system('puppet agent -t')
+    <%= @http_method %> '/<%= @name %>' do
+        IO.popen('<%= @command %>') do |output|
+            output.each do |line|
+                LOG.info(line.strip.chomp)
+            end
+        end
 	end
 
 	not_found do

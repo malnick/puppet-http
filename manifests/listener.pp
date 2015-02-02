@@ -1,14 +1,17 @@
 define webhook::listener (
 
-    $route              = $name, 
-    $bind_address       = '0.0.0.0',
-    $rack_env           = 'production',
-    $http_method        = 'get', 
+    $routes = {
+        $name = {
+            $http_method        = 'get', 
+            $command            = undef,
+        }
+    }
     $ssl_enable         = false,
     $port               = undef,
     $cert_path          = undef, 
     $key_path           = undef,
-    $command            = undef,
+    $rack_env           = 'production',
+    $bind_address       = '0.0.0.0',
 
 ) {
 

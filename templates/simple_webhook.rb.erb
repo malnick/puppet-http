@@ -33,14 +33,22 @@ opts = {
 }
 
 class Server < Sinatra::Base
-	
-    <%= @http_method %> '/<%= @name %>' do
-        IO.popen('<%= @command %>') do |output|
-            output.each do |line|
-                LOG.info(line.strip.chomp)
-            end
+
+    <% @routes.each do |route, params| %>
+    <% params.each do |k, v| %> 
+    <%= k['method'] %>'<%= route %>' do
+        IO.popen('<%= k['command'] %> do |output|
+            output.each do |line| LOG.info(line.strip.chomp) end
         end
-	end
+    end
+
+    #<%= @http_method %> '/<%= @name %>' do
+    #    IO.popen('<%= @command %>') do |output|
+    #        output.each do |line|
+    #            LOG.info(line.strip.chomp)
+    #        end
+    #    end
+    #end
 
 	not_found do
 		halt 404, 'You shall not pass! (page not found)'

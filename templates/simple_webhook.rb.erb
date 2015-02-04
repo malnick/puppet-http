@@ -35,12 +35,14 @@ opts = {
 class Server < Sinatra::Base
 
     <% @routes.each do |route, params| %>
-    <% params.each do |k, v| %> 
+        <% params.each do |k, v| %> 
     <%= k['method'] %>'<%= route %>' do
         IO.popen('<%= k['command'] %> do |output|
             output.each do |line| LOG.info(line.strip.chomp) end
         end
     end
+             <% end %>
+         <% end %>
 
     #<%= @http_method %> '/<%= @name %>' do
     #    IO.popen('<%= @command %>') do |output|

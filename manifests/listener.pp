@@ -1,6 +1,6 @@
 define webhook::listener (
 
-    $routes, 
+    $routes             = {},
     $ssl_enable         = false,
     $port               = undef,
     $cert_path          = undef, 

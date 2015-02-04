@@ -10,7 +10,7 @@ define webhook::listener (
 
 ) {
 
-    validate_hash($routes, "${routes}") 
+    #$    validate_hash($routes, "${routes}") 
 
     File {
         mode  => '0755',

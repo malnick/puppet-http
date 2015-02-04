@@ -1,11 +1,6 @@
 define webhook::listener (
 
-    $routes = {
-        $name = {
-            $http_method        = 'get', 
-            $command            = undef,
-        }
-    }
+    $routes, 
     $ssl_enable         = false,
     $port               = undef,
     $cert_path          = undef, 
@@ -14,6 +9,8 @@ define webhook::listener (
     $bind_address       = '0.0.0.0',
 
 ) {
+
+    validate_hash($routes, "You must pass a hash of hashes to routes parameter")
 
     File {
         mode  => '0755',

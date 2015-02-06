@@ -1,6 +1,6 @@
 require 'net/http'
 require 'uri'
-Puppet::Type.type(:webhook).provide(:webhook) do
+Puppet::Type.type(:http).provide(:http) do
 desc "Run pupppet on a node"
 
   def get 

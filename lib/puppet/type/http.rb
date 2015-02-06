@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:webhook) do
+Puppet::Type.newtype(:http) do
   desc "Run puppet on a node"
 
   ensurable do

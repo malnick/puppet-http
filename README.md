@@ -3,7 +3,7 @@
 ## Webhook Provider
 Provider will run a simple query against a webhook. For example, you'd like to run a GET request on ```http://localhost:8080/this```:
     
-    webhook { 'this':
+    http { 'this':
         ensure      => get,
         port        => '8080',
         fqdn        => 'localhost', # Do not place the http://, this currently done by the provider. Will update for https support soon.
@@ -17,11 +17,19 @@ You can also ensure ```post``` and pass a ```data``` parameter to it with JSON a
 This module also provides a simple webhook erb template that sets up a listener:
 
 ```ruby
-    webhook::listener { 'this':
-            port         => '6969',
-            bind_address => $bind_address, # defaults to 0.0.0.0
-            http_method  => 'get',
-            command      => 'puppet agent -t',
+    include webhook
+    webhook::listener {'puppet':
+        port => '6969',
+        routes            => { 
+            'run_puppet'  => {
+                'method'  => 'get',
+                'command' => "su - peadmin -c 'mco puppet runonce'"
+            },
+            'test'        => {
+                'method'  => 'get',
+                'command' => 'echo fuckitshipit',
+            },
+        }
     }
 ```
 
@@ -45,3 +53,4 @@ This module also provides a simple webhook erb template that sets up a listener:
 1. put method for provider
 1. other shit I didn't do this sunday
 
+    

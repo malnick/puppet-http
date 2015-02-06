@@ -10,8 +10,6 @@ define webhook::listener (
 
 ) {
 
-    #$    validate_hash($routes, "${routes}") 
-
     File {
         mode  => '0755',
         group => 'root',
@@ -30,6 +28,7 @@ define webhook::listener (
         path    => "/usr/local/bin/webhook_${name}/lib/webhook_${name}.rb",
         ensure  => file,
         content => template('webhook/simple_webhook.rb.erb'),
+        notify  => Service["webhook_${name}"],
     }
 
     file {"/usr/local/bin/webhook_${name}/logs":

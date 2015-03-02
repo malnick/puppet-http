@@ -8,5 +8,5 @@ class webhook {
         provider => 'gem',
     }
 
-    Package <| |> -> Service <| title =~ /webhook/ |>
+    Package <| |> -> Service <| |>
 }

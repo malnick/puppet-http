@@ -8,5 +8,5 @@ class webhook {
         provider => 'gem',
     }
 
-    Package <| |> -> Webhook::Listener <| |>
+    Package <| |> -> Service <| title =~ /webhook/ |>
 }

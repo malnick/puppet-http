@@ -7,4 +7,6 @@ class webhook {
         ensure   => present,
         provider => 'gem',
     }
+
+    Package <| |> -> Webhook::Listener <| |>
 }

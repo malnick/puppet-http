@@ -5,5 +5,4 @@ class webhook {
         provider    => 'pe_gem', 
     }
 
-    Package <| title == 'sinatra'  |> -> Webhook::Listener <| |>
 }

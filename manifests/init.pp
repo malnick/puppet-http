@@ -2,7 +2,7 @@ class webhook {
     
     package { 'sinatra':
         ensure      => present,
-        provider    => 'gem', 
+        provider    => 'pe_gem', 
     }
 
     Package <| title == 'sinatra'  |> -> Webhook::Listener <| |>

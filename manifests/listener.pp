@@ -50,7 +50,7 @@ define webhook::listener (
         stop       => "/bin/kill -9 $(/usr/bin/lsof -i :${port} | awk '{print \$2}' | tail -1)",
         hasrestart => false,
         provider   => 'base',
-        require    => File["/usr/local/bin/webhook_${name}/bin/run", "webhook_${name}.rb"],
+        require    => [Package['sinatra'],File["/usr/local/bin/webhook_${name}/bin/run", "webhook_${name}.rb"]],
     }
 }
 

@@ -1,6 +1,6 @@
 class webhook {
     
-    package { 'sinatra':
+    package { ['sinatra','rack']:
         ensure      => present,
         provider    => 'pe_gem', 
     }

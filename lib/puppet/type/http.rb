@@ -25,5 +25,9 @@ Puppet::Type.newtype(:http) do
       desc "The fqdn or ip address of the node"
   end
 
+  newparam(:data) do
+      desc "The data, as a hash, for POST"
+  end
+
 end
 

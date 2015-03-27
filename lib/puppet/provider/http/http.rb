@@ -21,8 +21,8 @@ desc "Run pupppet on a node"
     json      = resource[:data].to_json
     url       = "http://#{fqdn}:#{port}/#{route}"
     uri       = URI(url)
-    req       = Net::HTTP::Post.new(uri, initheader = {'Content-Type' =>'application/json'})
     http      = Net::HTTP.new(uri.host, uri.port)
+    req       = Net::HTTP::Post.new(uri, initheader = {'Content-Type' =>'application/json'})
     req.body  = json
     http.request(req)
     #Net::HTTP.post_form(uri, json)

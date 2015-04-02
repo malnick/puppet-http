@@ -33,31 +33,38 @@ http { 'status':
 This module also provides a simple webhook erb template that sets up a listener:
 
 ```ruby
-    include http
-    http::listener {'puppet':
-        port => '6969',
-        routes            => { 
-            'run_puppet'  => {
-                'method'  => 'get',
-                'command' => "su - peadmin -c 'mco puppet runonce'"
-            },
-            'test'        => {
-                'method'  => 'get',
-                'command' => 'echo fuckitshipit',
-            },
-        }
-    }
+include http
+http::listener {'puppet':
+  port => '6969',
+  routes            => { 
+    'run_puppet'  => {
+      'method'  => 'get',
+      'command' => "su - peadmin -c 'mco puppet runonce'"
+    },
+    'test'        => {
+      'method'  => 'get',
+      'command' => 'echo fuckitshipit',
+    },
+  }
+}
 ```
 
 ## Listener Defined Type Parameters
 
 ```ssl_enable```
+
 ```cert_path```
+
 ```key_path```
+
 ```port```
+
 ```bind_address```
+
 ```rack_env```
+
 ```command```
+
 ```http_method```
 
 ## Big fucking todo list

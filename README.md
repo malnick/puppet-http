@@ -2,17 +2,32 @@
 
 ## http Provider
 Provider will run a simple query against a webhook. For example, you'd like to run a GET request on ```http://localhost:8080/this```:
-    
-    http { 'this':
-        ensure      => get,
-        port        => '8080',
-        fqdn        => 'localhost', # Do not place the http://, this currently done by the provider. Will update for https support soon.
-    }
+
+### GET    
+
+```ruby
+http { 'this':
+  ensure      => get,
+  port        => '8080',
+  fqdn        => 'localhost', # Do not place the http://, this currently done by the provider. Will update for https support soon.
+}
+```
 
 This is nice if you have a webhook running somewhere to execute a certain command, and you'd like to hit that hook each time you run puppet on a specific node.
 
-You can also ensure ```post``` and pass a ```data``` parameter to it with JSON as the attribute in string format. 
+### Or POST - All data is mutated to JSON
 
+```ruby
+http { 'status':
+  ensure  => post,
+  port    => '1015',
+  fqdn    => 'localhost',
+  data    => {
+    'hostname'          => $::fqdn,
+    'some_data_key'     => '1.2.3',
+    'some_other_data'   => 'ImImportant'
+  }
+}
 ## Listener Example
 This module also provides a simple webhook erb template that sets up a listener:
 

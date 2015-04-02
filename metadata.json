@@ -1,6 +1,6 @@
 {
   "name": "malnick-http",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "Jeff Malnick",
   "summary": "This module uses wiccian magic to POST and GET shit from the interwebs",
   "license": "Apache-2.0",

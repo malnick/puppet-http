@@ -28,8 +28,10 @@ http { 'status':
     'some_other_data'   => 'ImImportant'
   }
 }
+```
 
 ## Listener Defined Type
+
 This module also provides a simple webhook erb template that sets up a listener:
 
 ```ruby

@@ -27,7 +27,7 @@ define http::listener (
     file {"webhook_${name}.rb":
         path    => "/usr/local/bin/webhook_${name}/lib/webhook_${name}.rb",
         ensure  => file,
-        content => template('webhook/simple_webhook.rb.erb'),
+        content => template('http/simple_webhook.rb.erb'),
         notify  => Service["webhook_${name}"],
     }
 
@@ -41,7 +41,7 @@ define http::listener (
 
     file {"/usr/local/bin/webhook_${name}/bin/run":
         ensure  => file,
-        content => template('webhook/run.erb'),
+        content => template('http/run.erb'),
     }
 
     service {"webhook_${name}":

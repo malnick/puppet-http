@@ -1,4 +1,4 @@
-class webhook {
+class http {
     
     package { ['sinatra','rack']:
         ensure      => present,

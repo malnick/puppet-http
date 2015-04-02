@@ -1,4 +1,4 @@
-class webhook::params {
+class http::params {
 
     $port               = '6969'
     $bind_address       = '0.0.0.0'

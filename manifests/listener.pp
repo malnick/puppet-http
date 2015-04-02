@@ -1,4 +1,4 @@
-define webhook::listener (
+define http::listener (
 
     $routes             = {},
     $ssl_enable         = false,

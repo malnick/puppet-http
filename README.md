@@ -1,6 +1,6 @@
 # puppet-http
 
-## http Provider
+## HTTP Provider
 Provider will run a simple query against a webhook. For example, you'd like to run a GET request on ```http://localhost:8080/this```:
 
 ### GET    
@@ -28,7 +28,8 @@ http { 'status':
     'some_other_data'   => 'ImImportant'
   }
 }
-## Listener Example
+
+## Listener Defined Type
 This module also provides a simple webhook erb template that sets up a listener:
 
 ```ruby

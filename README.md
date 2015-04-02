@@ -1,6 +1,6 @@
-# puppet-webhook
+# puppet-http
 
-## Webhook Provider
+## http Provider
 Provider will run a simple query against a webhook. For example, you'd like to run a GET request on ```http://localhost:8080/this```:
     
     http { 'this':
@@ -17,8 +17,8 @@ You can also ensure ```post``` and pass a ```data``` parameter to it with JSON a
 This module also provides a simple webhook erb template that sets up a listener:
 
 ```ruby
-    include webhook
-    webhook::listener {'puppet':
+    include http
+    http::listener {'puppet':
         port => '6969',
         routes            => { 
             'run_puppet'  => {

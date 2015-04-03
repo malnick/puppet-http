@@ -44,7 +44,7 @@ http::listener {'puppet':
       'command' => "su - peadmin -c 'mco puppet runonce'"
     },
     'test'        => {
-      'method'  => 'get',
+      'method'  => 'post',
       'command' => 'echo fuckitshipit',
     },
   }

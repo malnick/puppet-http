@@ -1,0 +1,12 @@
+{
+  "README.md": "ccc6dd28c978e3750d684200b4a5c2fa",
+  "lib/puppet/provider/http/http.rb": "882da594b1ff892ad295639ea5722f10",
+  "lib/puppet/type/http.rb": "5bdd61d60ca9f0f4b9a1974136fc5435",
+  "manifests/init.pp": "efa2b106313324c1a65ab64082758c75",
+  "manifests/listener.pp": "4a9b8704252a645eba9a95329b9820e9",
+  "manifests/params.pp": "c5399bf0c2ace2b132ce1004b87ab6b2",
+  "metadata.json": "393c11588d401de27b7ac2c4130c2a6d",
+  "templates/run.erb": "7b0426f8cf7e1c5302c1e744169603c6",
+  "templates/simple_webhook.rb.erb": "faa9c13b3e1b3eb7337dd88c79805806",
+  "tests/post.pp": "bf5bf1e85235fb258f0fc14a9172f5fe"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "malnick-http",
+  "version": "0.1.2",
+  "author": "Jeff Malnick",
+  "summary": "This module uses wiccian magic to POST and GET shit from the interwebs",
+  "license": "Apache-2.0",
+  "source": "https://github.com/malnick/puppet-http",
+  "project_page": "https://github.com/malnick/puppet-http",
+  "issues_url": "https://github.com/malnick/puppet-http/issues",
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">3.2.0 <4.0.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">3.0.0 <4.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "5",
+        "6",
+        "7"
+      ]
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/pe_gem","version_requirement":">= 0.1.0 <1.0.0"},
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.5.0 <5.0.0"}
+  ]
+}

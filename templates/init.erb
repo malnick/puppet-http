@@ -13,20 +13,22 @@ case "$1" in
   stop)
     if [ -e /var/run/webhook_<%= @name %>.pid ]; then
       echo "Stopping server"
-      kill -9 $(cat /var/run/webhook_<%= @name %>.pid) && rm /var/run/webhook_<%= @name %>.pid
+      kill -9 $(cat /var/run/webhook_<%= @name %>.pid)
       if [ $? > 0 ]; then
-        echo "Server did not properly shut down, looking for process using <%= @port %>."
-        if $(lsof -i <%= @port %> | awk 'NR==2 {print $2}'); then
-          echo "Detected process holding <%= @port %>, killing it."
-          kill -9 $(lsof -i <%= @port %> | awk 'NR==2 {print $2}')
+        echo "Server did not properly shut down, looking for process using port :<%= @port %>."
+        if $(lsof -i :<%= @port %> | awk 'NR==2 {print $2}'); then
+          echo "Detected process holding :<%= @port %>, killing it."
+          kill -9 $(lsof -i :<%= @port %> | awk 'NR==2 {print $2}')
           if [ $? > 0 ]; then
             echo "Killing it did not work, sorry."
           else
             echo "Done."
           fi
         else
-          echo "
+          echo "Done."
+        fi
       else
+        rm /var/run/webhook_<%= @name %>.pid
         echo "Done."
       fi
     fi

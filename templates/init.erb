@@ -13,9 +13,19 @@ case "$1" in
   stop)
     if [ -e /var/run/<%= @name %>.pid ]; then
       echo "Stopping server"
-      $(kill -9 $(cat /var/run/<%= @name %>.pid) && rm /var/run/<%= @name %>.pid) || kill -9 $(lsof -i :6969 | awk 'NR==2 {print $2}')
+      kill -9 $(cat /var/run/<%= @name %>.pid) && rm /var/run/<%= @name %>.pid
       if [ $? > 0 ]; then
-        echo "Server did not properly shut down."
+        echo "Server did not properly shut down, looking for process using <%= @port %>."
+        if $(lsof -i :6969 | awk 'NR==2 {print $2}'); then
+          echo "Detected process holding :6969, killing it."
+          kill -9 $(lsof -i :6969 | awk 'NR==2 {print $2}')
+          if [ $? > 0 ]; then
+            echo "Killing it did not work, sorry."
+          else
+            echo "Done."
+          fi
+        else
+          echo "
       else
         echo "Done."
       fi

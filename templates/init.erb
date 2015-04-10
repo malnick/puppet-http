@@ -6,15 +6,15 @@ case "$1" in
       echo "Server appears to be up, not doing anything."
     else
       echo "Starting <%= @name %> server"
-      /usr/local/bin/webhook_<%= @name %>/bin/./run
+      /usr/local/bin/webhook_<%= @name %>/bin/./run &
       echo $! > /var/run/<%= @name %>.pid
     fi
     ;;
   stop)
     if [ -e /var/run/<%= @name %>.pid ]; then
       echo "Stopping server"
-      kill -9 $(cat /var/run/<%= @name %>.pid) || kill -9 $(lsof -i :6969 | awk 'NR==2 {print $2}')
-      if [ $? > 0 ]
+      $(kill -9 $(cat /var/run/<%= @name %>.pid) && rm /var/run/<%= @name %>.pid) || kill -9 $(lsof -i :6969 | awk 'NR==2 {print $2}')
+      if [ $? > 0 ]; then
         echo "Server did not properly shut down."
       else
         echo "Done."

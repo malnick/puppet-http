@@ -44,12 +44,16 @@ define http::listener (
         content => template('http/run.erb'),
     }
 
+    file { "/etc/init.d/webhook_${name}":
+      ensure  => file,
+      content => template('http/init.erb'),
+      mode    => '0755',
+      notify  => Service["webhook_${name}"],
+    }
+
     service {"webhook_${name}":
         ensure     => running,
-        start      => "/usr/local/bin/webhook_${name}/bin/./run",
-        stop       => "/bin/kill -9 $(/usr/bin/lsof -i :${port} | awk '{print \$2}' | tail -1)",
-        hasrestart => false,
-        provider   => 'base',
+        enable     => true,
         require    => [Package['sinatra'],File["/usr/local/bin/webhook_${name}/bin/run", "webhook_${name}.rb"]],
     }
 }
